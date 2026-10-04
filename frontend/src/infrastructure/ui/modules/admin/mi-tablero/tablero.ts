@@ -1,7 +1,7 @@
 import './tablero.css';
 import { SessionStorageService } from '../../../../storage/SessionStorage';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = '/api';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 

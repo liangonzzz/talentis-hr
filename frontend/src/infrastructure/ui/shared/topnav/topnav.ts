@@ -1,4 +1,4 @@
-const LOGIN_URL = '/src/infrastructure/ui/modules/auth/login/login-principal/login.html';
+const LOGIN_URL = '/src/infrastructure/ui/auth/login-principal/login.html';
 
 function obtenerIniciales(nombre: string): string {
   return nombre
@@ -48,7 +48,7 @@ async function verificarToken(): Promise<void> {
     return;
   }
   try {
-    const response = await fetch('http://localhost:3000/api/auth/verificar', {
+    const response = await fetch('/api/auth/verificar', {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
     });

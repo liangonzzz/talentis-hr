@@ -42,3 +42,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
   display: flex;
   flex-direction: column;
 }
+
+@media (max-width: 768px) {
+  .layout { height: 100dvh; }
+  .content { overflow-y: auto; }
+}

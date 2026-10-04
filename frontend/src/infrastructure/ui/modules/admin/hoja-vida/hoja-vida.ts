@@ -1,6 +1,6 @@
 import './hoja-vida.css';
 
-const API = 'http://localhost:3000/api/hoja-vida';
+const API = '/api/hoja-vida';
 
 function token(): string {
   return localStorage.getItem('token') ?? '';
@@ -741,7 +741,7 @@ function initChatCandidato(): void {
 
   async function cargarMensajesCandidato(): Promise<void> {
     try {
-      const res = await fetch(`http://localhost:3000/api/mensajes/${candidatoId}`, {
+      const res = await fetch(`/api/mensajes/${candidatoId}`, {
         headers: { Authorization: `Bearer ${token()}` },
       });
       if (!res.ok) return;
@@ -752,7 +752,7 @@ function initChatCandidato(): void {
 
   async function verificarNoLeidos(): Promise<void> {
     try {
-      const res = await fetch(`http://localhost:3000/api/mensajes/${candidatoId}/no-leidos`, {
+      const res = await fetch(`/api/mensajes/${candidatoId}/no-leidos`, {
         headers: { Authorization: `Bearer ${token()}` },
       });
       if (!res.ok) return;
@@ -774,7 +774,7 @@ function initChatCandidato(): void {
     input.value = '';
     input.style.height = 'auto';
     try {
-      await fetch(`http://localhost:3000/api/mensajes/${candidatoId}`, {
+      await fetch(`/api/mensajes/${candidatoId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token()}` },
         body: JSON.stringify({ mensaje: texto }),

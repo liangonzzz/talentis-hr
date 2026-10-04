@@ -5,6 +5,8 @@ import { PasswordResetTokenEntity } from '../entities/PasswordResetTokenEntity';
 import { TareaEntity } from '../entities/TareaEntity';
 import { MensajeEntity } from '../entities/MensajeEntity';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 export const AppDataSource = new DataSource({
   type: 'postgres',
   host: envs.DB_HOST,
@@ -12,7 +14,9 @@ export const AppDataSource = new DataSource({
   database: envs.DB_NAME,
   username: envs.DB_USER,
   password: envs.DB_PASSWORD,
-  synchronize: true,
-  ssl: false,
+  // En Azure no se modifican las tablas automáticamente
+  synchronize: !isProduction,
+  // Azure PostgreSQL exige SSL
+  ssl: isProduction ? { rejectUnauthorized: false } : false,
   entities: [UsuarioEntity, PasswordResetTokenEntity, TareaEntity, MensajeEntity],
 });

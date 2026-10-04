@@ -297,3 +297,64 @@
   overflow-y: auto;
   height: 100%;
 }
+
+/* ══════════ RESPONSIVE: TABLET (y sidebar abierto) ══════════ */
+@media (max-width: 1100px) {
+  .db-wrap { padding: 20px 24px 24px; }
+
+  .db-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* Actividad a todo el ancho; tareas y estado lado a lado */
+  .db-bottom { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .db-bottom .db-panel:first-child { grid-column: 1 / -1; }
+  .db-panel { min-width: 0; }
+}
+
+/* ══════════ RESPONSIVE: CELULAR ══════════ */
+@media (max-width: 768px) {
+  .db-wrap { padding: 12px 16px calc(20px + env(safe-area-inset-bottom)); }
+
+  /* Header */
+  .db-header {
+    padding: 14px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .db-header h1 { font-size: 18px; }
+  .db-date { font-size: 12px; padding: 5px 10px; }
+
+  /* Tarjetas de métricas: 2 x 2 compactas */
+  .db-cards { gap: 10px; margin-bottom: 12px; }
+  .db-card { padding: 14px; }
+  .db-card-icon { width: 32px; height: 32px; margin-bottom: 10px; }
+  .db-card-value { font-size: 24px; }
+
+  /* Paneles apilados */
+  .db-bottom { grid-template-columns: 1fr; gap: 12px; }
+  .db-bottom .db-panel:first-child { grid-column: auto; }
+  .db-panel { padding: 16px; }
+  .db-panel-title { margin-bottom: 14px; }
+
+  /* "Ver todo" con área táctil más grande sin mover el layout */
+  .panel-link { padding: 8px 0 8px 12px; margin: -8px 0; }
+
+  /* Actividad: que el texto largo no empuje el ancho */
+  .activity-item > div:last-child { min-width: 0; }
+  .activity-text { overflow-wrap: anywhere; }
+
+  /* Tareas pendientes */
+  .task-item { padding: 12px; min-height: 48px; }
+  .task-check { width: 20px; height: 20px; }
+  .task-label { min-width: 0; overflow-wrap: anywhere; }
+  .task-pill { flex-shrink: 0; white-space: nowrap; }
+
+  /* Estado candidatos */
+  .barra { height: 8px; }
+}
+
+/* Sin hover pegado en pantallas táctiles */
+@media (hover: none) {
+  .db-card:hover { border-color: var(--border); box-shadow: var(--shadow); }
+  .task-item:hover { border-color: var(--border); }
+}

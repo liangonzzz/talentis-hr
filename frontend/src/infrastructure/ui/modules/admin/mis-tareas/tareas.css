@@ -714,3 +714,109 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 #modal-eliminar-tarea .btn-guardar:hover {
   background: #dc2626;
 }
+
+/* ══════════ RESPONSIVE: TABLET Y CELULAR (apilar lista + detalle) ══════════ */
+@media (max-width: 1100px) {
+  .tareas-content { overflow-y: auto; }
+
+  .tareas-layout {
+    flex-direction: column;
+    flex: none;
+    gap: 12px;
+  }
+
+  /* Los hijos de la lista pasan a ser hijos del layout para poder reordenarlos:
+     lista → crear → detalle/registro → tareas finalizadas */
+  .tareas-lista-wrap { display: contents; }
+  .tareas-lista      { order: 1; }
+  .tareas-crear-wrap { order: 2; }
+  .tarea-detalle     { order: 3; flex: none; }
+  .historial-wrap    { order: 4; margin-top: 8px !important; } /* pisa el margin inline */
+}
+
+/* ══════════ RESPONSIVE: CELULAR ══════════ */
+@media (max-width: 768px) {
+  .page-header-wrap { padding: 12px 16px 0; }
+  .page-header { padding: 14px; gap: 12px; }
+  .page-title { font-size: 18px; white-space: normal; }
+
+  /* Filtros apilados dentro del header */
+  .tareas-filtros { width: 100%; flex-direction: column; align-items: stretch; gap: 12px; }
+  .filtro-group,
+  .search-wrap,
+  .select-wrap { width: 100%; }
+  .search-input,
+  .filtro-select { width: 100%; height: 48px; font-size: 16px; }
+
+  .tareas-content { padding: 12px 16px 20px; }
+
+  /* Estado vacío */
+  .tareas-empty { min-height: 320px; padding: 0 8px; text-align: center; }
+  .tareas-empty .btn-crear-tarea { width: 100%; height: 48px; }
+
+  /* Lista de tareas */
+  .tarea-item { padding: 12px 14px; }
+  .btn-eliminar-tarea {
+    width: 40px;
+    height: 40px;
+    margin: -10px -10px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Crear tarea: texto y botón a ancho completo */
+  .tareas-crear-wrap { padding: 14px; gap: 10px; }
+  .tareas-crear-wrap span { flex: 1; min-width: 0; }
+  .btn-crear-tarea,
+  .btn-crear-tarea.outline {
+    width: 100%;
+    height: 48px;
+    margin-left: 0;
+    white-space: normal;
+  }
+
+  /* Detalle */
+  .detalle-fechas { padding: 14px; gap: 12px; }
+  .detalle-valor { overflow-wrap: anywhere; }
+
+  /* Registro de horas */
+  .registro-horas-card { padding: 14px; gap: 14px; }
+  .registro-grid { grid-template-columns: 1fr; gap: 12px; }
+  .form-group input,
+  .form-group select { width: 100%; min-width: 0; height: 48px; font-size: 16px; }
+  .form-group textarea { font-size: 16px; min-height: 96px; }
+
+  /* Registrar horas arriba (acción principal), Finalizar abajo */
+  .registro-acciones { flex-direction: column-reverse; gap: 8px; }
+  .btn-finalizar,
+  .btn-registrar { width: 100%; height: 48px; }
+
+  .impedimento-check { min-height: 44px; gap: 10px; }
+  .impedimento-check input { width: 20px; height: 20px; }
+
+  /* Modales */
+  .modal-box,
+  #modal-eliminar-tarea .modal-box {
+    width: calc(100% - 32px);
+    max-height: 90dvh;
+    overflow-y: auto;
+    padding: 24px 20px 20px;
+  }
+  .modal-close { width: 40px; height: 40px; top: 8px; right: 8px; }
+  .modal-title { padding-right: 32px; }
+  .form-grid { grid-template-columns: 1fr; gap: 12px; width: 100%; }
+
+  /* Botones: antes eran 240px/300px fijos y se salían de la pantalla */
+  .modal-actions,
+  #modal-eliminar-tarea .modal-actions { width: 100%; gap: 10px; }
+  .btn-cancelar,
+  .btn-guardar,
+  #modal-eliminar-tarea .btn-cancelar,
+  #modal-eliminar-tarea .btn-guardar {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+    height: 48px;
+  }
+}

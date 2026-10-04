@@ -18,7 +18,10 @@ import { deleteDocumento } from '../controller/HojaVidaController';
 import { getHojaVidaCandidato } from '../controller/HojaVidaController';
 
 
-const uploadsDir = path.join(__dirname, '..', '..', 'static', 'uploads');
+const uploadsDir =
+  process.env.NODE_ENV === 'production'
+    ? '/home/uploads'
+    : path.join(__dirname, '..', '..', 'static', 'uploads');
 if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
 
 const storage = multer.diskStorage({

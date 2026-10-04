@@ -98,3 +98,33 @@
   cursor: pointer; transition: background .15s, color .15s;
 }
 .modal-cancel-btn:hover { background: var(--bg); color: var(--text-main); }
+.menu-btn { display: none; }
+
+@media (max-width: 768px) {
+  .topnav { padding: 0 12px 0 4px; }
+
+  .menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--blue-dark);
+    cursor: pointer;
+  }
+
+  .topnav-middle { justify-content: center; }
+  .uni-logo-img { height: 40px; }
+
+  /* Solo el avatar; el nombre y el rol quedan dentro del modal */
+  .user-info,
+  .chev-icon { display: none; }
+  .topnav-user { padding: 4px; }
+
+  .modal-box { width: min(320px, 90%); }
+  .modal-logout-btn,
+  .modal-cancel-btn { min-height: 48px; }
+}

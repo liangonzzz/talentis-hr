@@ -14,7 +14,7 @@ interface Tarea {
   created_at: string;
 }
 
-const API = 'http://localhost:3000/api/tareas';
+const API = '/api/tareas';
 
 function getToken(): string {
   return localStorage.getItem('token') ?? '';

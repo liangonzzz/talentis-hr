@@ -1,4 +1,4 @@
-const LOGIN_URL = '/src/infrastructure/ui/modules/auth/login/login-principal/login.html';
+const LOGIN_URL = '/src/infrastructure/ui/auth/login-principal/login.html';
 const ACTIVE_KEY = 'sidebar-active';
 
 const MODULOS: Record<string, string> = {
@@ -129,7 +129,7 @@ async function verificarEstadoUsuario(): Promise<void> {
   if (!token) return;
 
   try {
-    const res = await fetch('http://localhost:3000/api/auth/me', {
+    const res = await fetch('/api/auth/me', {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) return;
@@ -230,6 +230,7 @@ function aplicarActive(): void {
       localStorage.setItem(ACTIVE_KEY, String(index));
       const nombre = item.querySelector('.nav-label')?.textContent?.trim() ?? '';
       cargarModulo(nombre);
+      closeMenu(); // en celular, cierra el menú al elegir una opción
     });
   });
 }
@@ -238,13 +239,23 @@ function toggleSidebar(): void {
   document.body.classList.toggle('collapsed');
 }
 
+// ── Menú en celular ───────────────────────────────────────────────
+
+function openMenu(): void {
+  document.body.classList.add('menu-open');
+}
+
+function closeMenu(): void {
+  document.body.classList.remove('menu-open');
+}
+
 async function verificarSesion(): Promise<void> {
   const token = localStorage.getItem('token');
   const rol   = localStorage.getItem('rol');
   if (!token || !rol) { window.location.href = LOGIN_URL; return; }
 
   try {
-    const response = await fetch('http://localhost:3000/api/auth/verificar', {
+    const response = await fetch('/api/auth/verificar', {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -264,4 +275,11 @@ export async function initSidebar(): Promise<void> {
   aplicarRoles();
   aplicarActive();
   (window as any).toggleSidebar = toggleSidebar;
+  (window as any).openMenu = openMenu;
+  (window as any).closeMenu = closeMenu;
+
+  // Si se agranda la ventana, el menú del celular se cierra solo
+  window.matchMedia('(min-width: 769px)').addEventListener('change', (e) => {
+    if (e.matches) closeMenu();
+  });
 }

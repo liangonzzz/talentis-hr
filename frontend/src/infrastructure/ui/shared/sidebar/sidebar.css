@@ -115,3 +115,59 @@ body.collapsed .toggle-icon { transform: rotate(180deg); }
   opacity: 1; max-width: 120px; overflow: hidden;
 }
 body.collapsed .toggle-label { opacity: 0; max-width: 0; }
+
+.menu-backdrop,
+.menu-close { display: none; }
+
+@media (max-width: 768px) {
+  /* El sidebar pasa a ser un panel que sale desde la izquierda */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    height: 100dvh;
+    z-index: 900;
+    transform: translateX(-100%);
+    transition: transform var(--t);
+    box-shadow: 4px 0 24px rgba(26, 58, 92, 0.2);
+  }
+  body.menu-open .sidebar { transform: translateX(0); }
+
+  /* En celular no se usa el modo colapsado */
+  body.collapsed .sidebar { width: 280px; }
+  body.collapsed .brand-text { opacity: 1; max-width: 120px; }
+  body.collapsed .nav-label { opacity: 1; max-width: 160px; }
+  body.collapsed .nav-item::after { display: none; }
+  .sidebar-footer { display: none; }
+
+  .nav-item { min-height: 48px; }
+
+  .menu-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-left: auto;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: var(--text-soft);
+    cursor: pointer;
+  }
+
+  .menu-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 899;
+    background: rgba(15, 30, 50, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--t);
+  }
+  body.menu-open .menu-backdrop { opacity: 1; pointer-events: all; }
+}

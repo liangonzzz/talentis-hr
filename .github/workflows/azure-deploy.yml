@@ -1,0 +1,47 @@
+﻿name: Deploy Talentis a Azure
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Compilar backend
+        working-directory: backend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Compilar frontend
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Dejar solo dependencias de produccion del backend
+        working-directory: backend
+        run: npm prune --omit=dev
+
+      - name: Preparar paquete
+        run: |
+          mkdir -p deploy/backend deploy/frontend
+          cp -r backend/dist deploy/backend/dist
+          cp -r backend/node_modules deploy/backend/node_modules
+          cp backend/package.json deploy/backend/package.json
+          cp -r frontend/dist deploy/frontend/dist
+
+      - name: Desplegar en Azure
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: talentis-lian
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: deploy

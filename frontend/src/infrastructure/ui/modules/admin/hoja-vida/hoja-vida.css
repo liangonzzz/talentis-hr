@@ -694,3 +694,169 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
   transition: background .15s, transform .1s;
 }
 .chat-send-btn:hover { background: var(--blue-mid); transform: scale(1.08); }
+
+/* ══════════ RESPONSIVE: TABLET Y CELULAR (apilar perfil + secciones) ══════════ */
+@media (max-width: 1100px) {
+  .layout { height: 100dvh; }
+
+  /* Una sola columna con scroll propio */
+  .content-area {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 24px 24px;
+    overflow-y: auto;
+  }
+
+  /* Perfil: sin contenedor blanco, solo la tarjeta azul. Los pasos se ocultan
+     (cada acordeón ya trae su check) */
+  .profile-panel {
+    width: 100%;
+    padding: 0;
+    gap: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    overflow: visible;
+    align-self: auto;
+    flex-shrink: 0;
+  }
+  .steps { display: none; }
+
+  /* Avatar a la izquierda, datos a la derecha, botón PDF al final */
+  .profile-top-card {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr) auto;
+    column-gap: 14px;
+    row-gap: 2px;
+    align-items: center;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+  }
+  .avatar-ring-wrap { grid-row: 1 / span 3; width: 64px; height: 64px; margin: 0; }
+  .avatar-ring { width: 64px; height: 64px; }
+  #panel-avatar { width: 100% !important; height: 100% !important; font-size: 20px !important; } /* pisa el inline */
+  .edit-btn { width: 28px; height: 28px; bottom: -2px; right: -2px; }
+
+  .profile-name,
+  .profile-role,
+  .profile-email { grid-column: 2; text-align: left; min-width: 0; overflow-wrap: anywhere; }
+  .profile-email { font-size: 11px; }
+  .cv-btn { grid-column: 3; grid-row: 1 / span 3; margin: 0; height: 44px; justify-content: center; }
+
+  /* Secciones: sin contenedor, cada acordeón es su propia tarjeta */
+  .sections-wrapper {
+    flex: none;
+    overflow: visible;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    align-self: auto;
+  }
+  .sections-panel { flex: none; overflow: visible; padding: 0; gap: 10px; }
+}
+
+/* ══════════ RESPONSIVE: CELULAR ══════════ */
+@media (max-width: 768px) {
+  .page-header-wrap { padding: 12px 16px 0; }
+
+  /* Header: título + % arriba, barra a todo el ancho abajo */
+  .page-header { padding: 14px; flex-wrap: wrap; gap: 12px; }
+  .page-title { font-size: 18px; order: 1; }
+  .progress-wrap { display: contents; }
+  .progress-badge { order: 2; }
+  .progress-track { order: 3; flex: 1 1 100%; width: 100%; height: 8px; }
+
+  /* Deja espacio para que el botón flotante del chat no tape el final */
+  .content-area { padding: 12px 16px calc(88px + env(safe-area-inset-bottom)); }
+
+  /* Botón PDF debajo, a ancho completo */
+  .cv-btn { grid-column: 1 / -1; grid-row: auto; width: 100%; margin-top: 12px; }
+
+  /* Acordeones */
+  .sec-header { padding: 14px 16px; min-height: 56px; }
+  .sec-body { padding: 0 16px 16px; }
+
+  /* Formularios en una columna */
+  .frow { flex-direction: column; gap: 12px; margin-top: 12px; }
+  .fgrp { flex: none; }
+  .fgrp:empty { display: none; }          /* separadores vacíos del escritorio */
+  .full-width { flex: none; }
+  .flbl { font-size: 11px; }
+
+  .finp { height: 48px; padding: 0 12px; font-size: 16px; }
+  .fsel { padding-right: 34px; background-position: right 12px center; }
+  .ftextarea { height: auto; min-height: 96px; padding: 12px; }
+  .finp[type="date"] {
+    width: 100%;
+    min-width: 0;
+    text-align: left;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .skills-row { flex-direction: column; gap: 12px; }
+  .skill-inp { flex: none; }
+
+  /* Tabs de Datos personales / contacto */
+  .dp-tabs { overflow-x: auto; }
+  .dp-tab { flex: 1 0 auto; min-height: 44px; padding: 10px 14px; white-space: nowrap; }
+
+  /* Subida y vista previa de documentos */
+  .btn-upload { width: 100%; height: 48px; justify-content: center; }
+  .fdoc-dropzone { padding: 22px 16px; text-align: center; }
+  .doc-bloque { margin: 14px 0 0; }
+  .fdoc-preview-left { flex: 1; min-width: 0; }
+  .fdoc-preview-info { min-width: 0; }
+  .fdoc-preview-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fdoc-action-btn { width: 40px; height: 40px; }
+
+  /* Registros guardados (formación / experiencia) */
+  .registro-item { gap: 8px; }
+  .registro-info { min-width: 0; }
+  .registro-titulo,
+  .registro-sub { overflow-wrap: anywhere; }
+  .btn-eliminar-registro { min-width: 40px; min-height: 40px; flex-shrink: 0; }
+
+  /* Cancelar / Guardar 50-50; el toast arriba, solo cuando está visible */
+  .sec-actions { flex-wrap: wrap; margin-top: 16px; padding-top: 14px; }
+  .hv-toast { order: -1; flex: 1 1 100%; margin-top: 0; }
+  .hv-toast:not(.visible) { display: none; }
+  .btn-cancel,
+  .btn-save { flex: 1 1 0; height: 48px; padding: 0; }
+
+  /* Modales (sus estilos base viven en otros CSS: esto solo los acota) */
+  .modal-box,
+  .modal-familiar-box {
+    max-width: calc(100vw - 32px);
+    max-height: 90dvh;
+    overflow-y: auto;
+  }
+  .modal-familiar-close { width: 40px; height: 40px; }
+  .modal-familiar-actions > button,
+  .modal-logout-btn,
+  .modal-cancel-btn { min-height: 48px; }
+  .modal-familiar-actions > button { flex: 1; }
+
+  /* Chat flotante del candidato */
+  .chat-fab { right: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); }
+  .modal-chat-candidato {
+    left: 8px;
+    right: 8px;
+    width: auto;
+    bottom: calc(80px + env(safe-area-inset-bottom));
+    height: min(70dvh, 520px);
+  }
+  .chat-input { font-size: 16px; }
+  .chat-send-btn { width: 44px; height: 44px; }
+}
+
+/* Sin hover pegado en pantallas táctiles */
+@media (hover: none) {
+  .sec-card:hover { box-shadow: var(--shadow); }
+  .btn-save:hover { background: var(--blue-dark); }
+  .btn-cancel:hover { background: #fff; color: var(--text-soft); }
+  .cv-btn:hover { background: var(--bg); }
+  .btn-upload:hover { background: #fff; border-color: var(--border); }
+  .chat-fab:hover { background: var(--blue-dark); transform: none; }
+  .chat-send-btn:hover { background: var(--blue-dark); transform: none; }
+}

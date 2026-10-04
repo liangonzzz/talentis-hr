@@ -1,6 +1,6 @@
 import '../admin/hoja-vida/hoja-vida.css';
 
-const API = 'http://localhost:3000/api';
+const API = '/api';
 
 function token(): string {
   return localStorage.getItem('token') ?? '';

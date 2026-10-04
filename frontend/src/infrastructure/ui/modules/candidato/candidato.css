@@ -842,3 +842,118 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .modal-chat-candidato.abierto {
   display: flex;
 }
+
+/* ══════════ RESPONSIVE: CELULAR ══════════ */
+@media (max-width: 768px) {
+  .page-header-wrap { padding: 12px 16px 0; }
+  .page-header { padding: 12px 16px; gap: 12px; }
+  .page-title { font-size: 18px; }
+  .btn-agregar { min-height: 44px; padding: 0 14px; font-size: 12px; white-space: nowrap; }
+
+  .candidatos-content { padding: 12px 16px 20px; gap: 12px; }
+
+  /* Filtros apilados */
+  .filtros-card { flex-direction: column; align-items: stretch; gap: 12px; padding: 14px; }
+  .filtro-group { width: 100%; }
+  .search-wrap,
+  .select-wrap { width: 100%; }
+  .search-input,
+  .filtro-select { width: 100%; height: 48px; font-size: 16px; }
+
+  /* Tabla → una tarjeta por candidato */
+  .tabla-card { background: transparent; border: none; box-shadow: none; overflow: visible; }
+  .cand-tabla,
+  .cand-tabla tbody { display: block; }
+  .cand-tabla thead { display: none; }
+
+  .cand-tabla tbody tr,
+  .cand-tabla tbody tr:last-child {
+    display: block;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .cand-tabla tbody tr:hover { background: var(--card-bg); }
+
+  .cand-tabla td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-top: 1px solid #eef2f7;
+    text-align: right;
+    word-break: break-word;
+  }
+  .cand-tabla td:first-child {
+    justify-content: flex-start;
+    text-align: left;
+    padding: 0 0 10px;
+    border-top: none;
+  }
+  .cand-tabla td[colspan] { display: block; text-align: center; }
+
+  /* Etiquetas de cada dato */
+  .cand-tabla td:not(:first-child)::before {
+    color: var(--text-soft);
+    font-size: 12px;
+    text-align: left;
+    flex-shrink: 0;
+  }
+  .cand-tabla td:nth-child(2)::before { content: 'Correo'; }
+  .cand-tabla td:nth-child(3)::before { content: 'Celular'; }
+  .cand-tabla td:nth-child(4)::before { content: 'Cargo'; }
+  .cand-tabla td:nth-child(5)::before { content: 'Hoja de vida'; }
+  .cand-tabla td:nth-child(5) > div { text-align: right; }
+  .cand-tabla td:nth-child(5) > div > div { justify-content: flex-end; }
+
+  /* Botones de acción con texto */
+  .cand-tabla td:nth-child(6) { display: block; padding: 12px 0 0; }
+  .cand-tabla td:nth-child(6)::before { content: none; }
+  .acciones-wrap { width: 100%; gap: 8px; }
+  .btn-accion {
+    flex: 1;
+    width: auto;
+    height: 44px;
+    gap: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .btn-accion.ver::after        { content: 'Ver HV'; }
+  .btn-accion.clasificar::after { content: 'Clasificar'; }
+  .btn-accion.mensaje::after    { content: 'Mensaje'; }
+
+  /* Modales */
+  .modal-box {
+    width: calc(100% - 32px);
+    max-height: 90dvh;
+    overflow-y: auto;
+    padding: 24px 20px;
+  }
+  .modal-close { width: 40px; height: 40px; top: 8px; right: 8px; }
+  .form-grid { grid-template-columns: 1fr; gap: 12px; }
+  .form-group input,
+  .form-group select { height: 48px; font-size: 16px; }
+  .modal-textarea { font-size: 16px; }
+  .btn-cancelar,
+  .btn-guardar { height: 48px; }
+  .btn-clasificado,
+  .btn-no-clasificado { height: 50px; }
+
+  /* Chat a pantalla completa */
+  .modal-chat-box {
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    padding: 0;
+  }
+  .chat-mensajes { width: 100%; }
+  .chat-input { font-size: 16px; }
+  .chat-send-btn { width: 44px; height: 44px; }
+}

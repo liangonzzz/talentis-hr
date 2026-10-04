@@ -1,6 +1,6 @@
 import { IAuthService, LoginResponse } from '../../domain/ports/IAuthService';
 
-const API_URL = 'http://localhost:3000/api/auth';
+const API_URL = '/api/auth';
 
 export class AuthApiService implements IAuthService {
   async login(
