@@ -683,6 +683,41 @@ function initCamara(): void {
   });
 }
 
+// ── PANTALLA ENCENDIDA (Wake Lock, funcionalidad móvil) ─────
+
+let wakeLock: any = null;
+
+async function pedirWakeLock(): Promise<void> {
+  try {
+    if ('wakeLock' in navigator) {
+      wakeLock = await (navigator as any).wakeLock.request('screen');
+    }
+  } catch {
+    // sin soporte o sin permiso: se ignora
+  }
+}
+
+function initWakeLock(): void {
+  if (!('wakeLock' in navigator)) return;
+  pedirWakeLock();
+  // El sistema libera el bloqueo al cambiar de app; se vuelve a pedir al regresar
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') pedirWakeLock();
+  });
+}
+
+// ── INSIGNIA EN EL ÍCONO (Badging API, funcionalidad móvil) ─
+
+function actualizarInsignia(cantidad: number): void {
+  const nav = navigator as any;
+  try {
+    if (cantidad > 0 && nav.setAppBadge) nav.setAppBadge(cantidad);
+    else if (nav.clearAppBadge) nav.clearAppBadge();
+  } catch {
+    // sin soporte: se ignora
+  }
+}
+
 // ── INIT ────────────────────────────────────────────────────
 
 export async function initHojaDeVida(): Promise<void> {
@@ -719,12 +754,13 @@ export async function initHojaDeVida(): Promise<void> {
   initDocumentoVisual('doc-contrato-input',    'drop-contrato',       'doc-contrato-preview',    'doc-contrato-name',    'doc-contrato-size',    'doc-contrato-delete',    '');
   initDocumentoVisual('doc-referencia-input',  'drop-referencia',     'doc-referencia-preview',  'doc-referencia-name',  'doc-referencia-size',  'doc-referencia-delete',  '');
   initCamara();
- 
-    const rolActual = localStorage.getItem('rol');
-    const rolesConChat = ['candidato', 'empleado'];
-    if (rolesConChat.includes(rolActual ?? '')) {
-      initChatCandidato();
-    }
+  initWakeLock();
+
+  const rolActual = localStorage.getItem('rol');
+  const rolesConChat = ['candidato', 'empleado'];
+  if (rolesConChat.includes(rolActual ?? '')) {
+    initChatCandidato();
+  }
 }
 
 function initChatCandidato(): void {
@@ -801,6 +837,7 @@ function initChatCandidato(): void {
       });
       if (!res.ok) return;
       const { count } = await res.json();
+      actualizarInsignia(count);
       const badge = document.getElementById('chat-fab-badge')!;
       if (count > 0) {
         badge.textContent = String(count);
