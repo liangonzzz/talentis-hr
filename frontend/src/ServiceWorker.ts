@@ -18,7 +18,7 @@ interface SWScope {
 
 const sw = self as unknown as SWScope;
 
-const CACHE = 'talentis-v1';
+const CACHE = 'talentis-v2';
 const PRECACHE: string[] = ['/', '/manifest.json', '/icons/icon-192.png', '/icons/icon-512.png'];
 
 // Instalación: guarda en caché los archivos básicos

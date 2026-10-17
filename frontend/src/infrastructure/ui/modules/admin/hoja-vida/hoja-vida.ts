@@ -639,6 +639,50 @@ function bindBotones(): void {
   document.getElementById('btn-guardar-documentos')  ?.addEventListener('click', guardarDocumentos);
 }
 
+// ── CÁMARA (funcionalidad móvil) ────────────────────────────
+
+function initCamara(): void {
+  const campos = ['policia', 'procuraduria', 'contrato', 'referencia'];
+
+  campos.forEach(campo => {
+    const drop  = document.getElementById(`drop-${campo}`);
+    const input = document.getElementById(`doc-${campo}-input`) as HTMLInputElement;
+    if (!drop || !input) return;
+
+    // Input oculto que abre la cámara trasera del celular
+    const camInput = document.createElement('input');
+    camInput.type = 'file';
+    camInput.accept = 'image/*';
+    camInput.setAttribute('capture', 'environment');
+    camInput.style.display = 'none';
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn-upload';
+    btn.id = `doc-${campo}-camara`;
+    btn.style.marginTop = '8px';
+    btn.innerHTML = '<i class="fa-solid fa-camera"></i> Tomar foto';
+
+    btn.addEventListener('click', () => {
+      if (!input.disabled) camInput.click();
+    });
+
+    // Pasa la foto al input normal para reutilizar todo el flujo existente
+    camInput.addEventListener('change', () => {
+      const file = camInput.files?.[0];
+      if (!file) return;
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      input.files = dt.files;
+      input.dispatchEvent(new Event('change'));
+      camInput.value = '';
+    });
+
+    drop.insertAdjacentElement('afterend', btn);
+    btn.after(camInput);
+  });
+}
+
 // ── INIT ────────────────────────────────────────────────────
 
 export async function initHojaDeVida(): Promise<void> {
@@ -674,7 +718,7 @@ export async function initHojaDeVida(): Promise<void> {
   initDocumentoVisual('doc-procuraduria-input','drop-procuraduria',   'doc-procuraduria-preview','doc-procuraduria-name','doc-procuraduria-size','doc-procuraduria-delete','');
   initDocumentoVisual('doc-contrato-input',    'drop-contrato',       'doc-contrato-preview',    'doc-contrato-name',    'doc-contrato-size',    'doc-contrato-delete',    '');
   initDocumentoVisual('doc-referencia-input',  'drop-referencia',     'doc-referencia-preview',  'doc-referencia-name',  'doc-referencia-size',  'doc-referencia-delete',  '');
-
+  initCamara();
  
     const rolActual = localStorage.getItem('rol');
     const rolesConChat = ['candidato', 'empleado'];
