@@ -97,8 +97,11 @@ function renderTabla(lista: Funcionario[]): void {
       </td>
       <td>
         <div class="acciones-wrap">
-          <button class="btn-accion descargar" title="Descargar hoja de vida" onclick="descargarHojaVida(${f.id})">
+                    <button class="btn-accion descargar" title="Descargar hoja de vida" onclick="descargarHojaVida(${f.id})">
             <i class="fa-solid fa-download"></i>
+          </button>
+          <button class="btn-accion descargar" title="Compartir hoja de vida" onclick="compartirHojaVida(${f.id})">
+            <i class="fa-solid fa-share-nodes"></i>
           </button>
           <button class="btn-accion chat" title="Chat con funcionario" onclick="abrirChat(${f.id}, '${f.nombre} ${f.apellidos}')">
             <i class="fa-solid fa-envelope"></i>
@@ -329,6 +332,46 @@ async function descargarHojaVida(id: number): Promise<void> {
   }
 }
 
+// ── Compartir hoja de vida (Web Share API, funcionalidad móvil) ────────────
+async function compartirHojaVida(id: number): Promise<void> {
+  try {
+    const res = await fetch(`/api/hoja-vida/candidato/${id}`, { headers: authHeaders() });
+    if (!res.ok) throw new Error('No se pudo obtener la hoja de vida');
+    const data = await res.json();
+
+    const perfil      = data.perfil      ?? {};
+    const contacto    = data.contacto    ?? {};
+    const formacion   = data.formacion   ?? [];
+    const experiencia = data.experiencia ?? [];
+
+    const nombre = `${perfil.nombre ?? ''} ${perfil.apellidos ?? ''}`.trim() || 'Funcionario';
+    const lineas: string[] = [
+      `Hoja de vida - ${nombre}`,
+      perfil.cargo ? `Cargo: ${perfil.cargo}` : '',
+      contacto.correo   ? `Correo: ${contacto.correo}`     : '',
+      contacto.telefono ? `Teléfono: ${contacto.telefono}` : '',
+      formacion.length   ? `Formación: ${formacion.map((f: any) => f.titulo).join(', ')}` : '',
+      experiencia.length ? `Experiencia: ${experiencia.map((e: any) => `${e.cargo} en ${e.empresa}`).join('; ')}` : '',
+      'Generado con GRH Talentis',
+    ].filter(Boolean);
+    const texto = lineas.join('\n');
+
+    if (navigator.share) {
+      // Menú nativo del celular (WhatsApp, correo, etc.)
+      await navigator.share({ title: `Hoja de vida - ${nombre}`, text: texto });
+    } else if (navigator.clipboard) {
+      // Computador sin menú de compartir: se copia al portapapeles
+      await navigator.clipboard.writeText(texto);
+      alert('Tu navegador no tiene menú de compartir. El resumen se copió al portapapeles.');
+    } else {
+      alert('Compartir no está disponible en este dispositivo.');
+    }
+  } catch (err: any) {
+    // AbortError = el usuario cerró el menú; no es un error real
+    if (err?.name !== 'AbortError') alert(err.message ?? 'No se pudo compartir');
+  }
+}
+
 function generarHTMLHojaVida(data: any): string {
   const perfil      = data.perfil      ?? {};
   const contacto    = data.contacto    ?? {};
@@ -519,6 +562,7 @@ export function initFuncionarios(): void {
 
   // Exponer al window para los onclick del HTML dinámico
   (window as any).descargarHojaVida      = descargarHojaVida;
+  (window as any).compartirHojaVida      = compartirHojaVida;
   (window as any).abrirChat              = abrirChat;
   (window as any).abrirDropdownEstado    = abrirDropdownEstado;
   (window as any).pedirConfirmarEliminar = pedirConfirmarEliminar;
